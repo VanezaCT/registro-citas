@@ -10,15 +10,15 @@ import { useState } from 'react';
 
 
 
-const AppFormik = () => {
+const AppFormik = (props) => {
 
-    const valorInitialDay= new Date([0])
+   
     // cambio de estado datos 
-    const [date, setDate] = useState(new Date([0]))
-    const [hour, setHour] = useState(new Date())
-    const [userName, setUserName] = React.useState("");
-    const [email, setEmail] = React.useState("");
-    const [phone, setPhone] = React.useState("");
+    // const [date, setDate] = useState(new Date([0]))
+    // const [hour, setHour] = useState(new Date())
+    // const [userName, setUserName] = React.useState("");
+    // const [email, setEmail] = React.useState("");
+    // const [phone, setPhone] = React.useState("");
     
     // console.log(fechaSeleccionada, userName, email, phone);
 
@@ -31,62 +31,65 @@ const AppFormik = () => {
 
 
     // funciones de validacion de datos
-    const validateDate = (e) => {
-        setDate(e.target.value)
-        { date.getDate ==='' ? setErrorDate(true) : setErrorDate(false) } //falta corregir
+    // const validateDate = (e) => {
+    //     setDate(e.target.value)
+    //     { date.getDate ==='' ? setErrorDate(true) : setErrorDate(false) } //falta corregir
+    // }
+
+    // const validateHour = (e) => {
+    //     setHour(e.target.value)
+    //     { hour.length === '' ? setErrorHour(true) : setErrorHour(false) } //falta corregir
+    // }
+
+    // const validateUserName = (e) => {
+    //     setUserName(e.target.value)
+    //     { userName.length < 8 ? setErrorUserName(true) : setErrorUserName(false) }
+    // }
+
+    // const validateEmail = (e) => {
+    //     setEmail(e.target.value)
+    //     { !email.includes('@' && '.') ? setErrorEmail(true) : setErrorEmail(false) }
+    // }
+
+    // const validatePhone = (e) => {
+    //     setPhone(e.target.value)
+    //     { phone.length > 8 ? setErrorPhone(true) : setErrorPhone(false) }
+    // }
+
+
+    const valorInitial = {
+        date: ' ',
+        hour: '',
+        userName: '',
+        email: '',
+        phone: ''
     }
-
-    const validateHour = (e) => {
-        setHour(e.target.value)
-        { hour.length === '' ? setErrorHour(true) : setErrorHour(false) } //falta corregir
-    }
-
-    const validateUserName = (e) => {
-        setUserName(e.target.value)
-        { userName.length < 8 ? setErrorUserName(true) : setErrorUserName(false) }
-    }
-
-    const validateEmail = (e) => {
-        setEmail(e.target.value)
-        { !email.includes('@' && '.') ? setErrorEmail(true) : setErrorEmail(false) }
-    }
-
-    const validatePhone = (e) => {
-        setPhone(e.target.value)
-        { phone.length > 8 ? setErrorPhone(true) : setErrorPhone(false) }
-    }
-
-
-
-
+    const [values, setValues] = useState(valorInitial);
 
     // capturar datos
 
-    const capturarValor=() => {
-   
+    const capturarDatosInput = e =>{
+        const {name,value} = e.target
+        // console.log(name,value);
+        setValues({...values,[name]:value})
         
-        const day= date.getDate()+'/'+date.getMonth()+'/'+date.getFullYear()
-        const hours = hour.getHours() + ':' + hour.getMinutes()
-             return{
-            date: day,
-            hour: hours,
-            userName: userName,
-            email: email,
-            phone: phone
-        }
     }
 
+    const capturarValor=(e) => {
+        e.preventDefault()
+        props.addCitas(values)
+        console.log(values);
+    }
 
-    // prueb
-  
     return (
         <div>
-            <form className='datePicker'>
+            <form className='datePicker' onSubmit={capturarValor}>
 
                 <h1>Registra tu cita</h1>
 
                 <TextField
-                    id="date"
+                    // id="date"
+                    name='date'
                     label="Fecha"
                     type="date"
                     variant='filled'
@@ -96,10 +99,12 @@ const AppFormik = () => {
                     }}
                     error={errorDate}
                     style={{ marginTop: 15, width: 250 }}
+                    onChange={capturarDatosInput}
                 />
 
                 <TextField
-                    id="time"
+                    // id="time"
+                    name='hour'
                     label="Alarm clock"
                     type="time"
                     variant='filled'
@@ -111,9 +116,12 @@ const AppFormik = () => {
                     //     step: 300, // 5 min
                     error={errorHour}
                     style={{ marginTop: 15, width: 250 }}
+                    onChange={capturarDatosInput}
                 />
                 <TextField
-                    onChange={validateUserName}
+                    // onChange={validateUserName}
+                    name='userName'
+                    onChange={capturarDatosInput}
                     label="Nombres y Apellidos"
                     error={errorUserName}
                     variant="filled"
@@ -121,7 +129,9 @@ const AppFormik = () => {
                     style={{ marginTop: 15, width: 250 }}
                 />
                 <TextField
-                    onChange={validateEmail}
+                    // onChange={validateEmail}
+                    name='email'
+                    onChange={capturarDatosInput}
                     label="Ingresa tu correo"
                     error={errorEmail}
                     variant="filled"
@@ -129,7 +139,9 @@ const AppFormik = () => {
                     style={{ marginTop: 15, width: 250 }}
                 />
                 <TextField
-                    onChange={validatePhone}
+                    // onChange={validatePhone}
+                    name='phone'
+                    onChange={capturarDatosInput}
                     label="Ingresa tu numero de celular"
                     error={errorPhone}
                     type='tel'
@@ -143,9 +155,9 @@ const AppFormik = () => {
                     variant="contained"
                     style={{ width: 150, marginTop: 15 }}
                     type='submit'
-                    onClick={() => 
-                    alert(JSON.stringify(capturarValor()))
-                    }>
+                    // onClick={() => 
+                    // alert(JSON.stringify(capturarValor))}
+                    >
                     Registrar</Button>
             </form>
         </div>
